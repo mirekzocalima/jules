@@ -1,0 +1,12 @@
+env: stage
+backend:
+  host: stage-backend.internal
+  port: 8001
+api:
+  host: stage-api.internal
+  port: 8000
+frontend:
+  host: stage-frontend.internal
+  port: 4200
+database:
+  url: postgresql://user:password@localhost:5432/stage_db

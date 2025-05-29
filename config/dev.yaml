@@ -1,0 +1,12 @@
+env: dev
+backend:
+  host: localhost
+  port: 8001
+api:
+  host: localhost
+  port: 8000
+frontend:
+  host: localhost
+  port: 4200
+database:
+  url: postgresql://user:password@localhost:5432/dev_db

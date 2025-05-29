@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jules_core"
+version = "0.0.1"
+description = "Core backend logic for Nautilus Jules"
+authors = [
+    { name = "Your Name", email = "your@email.com" }
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "boto3>=1.26.0",
+    "joblib>=1.0.0",
+    "matplotlib>=3.4.0",
+    "nbformat>=4.2.0",
+    "numpy>=1.21.0",
+    "pandas>=1.3.0",
+    "plotly>=5.3.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "python-dotenv>=0.19.0",
+    "pyyaml>=5.4.1",
+    "scikit-learn>=0.24.0",
+    "tenacity>=8.0.0",
+    "xgboost==2.0.3",
+    "vessels @ git+ssh://github.com/mirekzocalima/vessels.git@main",
+    "cables @ git+ssh://github.com/mirekzocalima/cables.git@main"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "black>=23.0"
+]
+
+[tool.semantic_release]
+version_variable = [
+    "backend/jules_core/__init__.py:__version__"
+]
+branch = "main"
+upload_to_pypi = false
+changelog_file = "CHANGELOG.md"
+build_command = ""
