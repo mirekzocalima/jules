@@ -299,23 +299,26 @@ def get_max_operational_amplitudes(df: pd.DataFrame) -> Tuple[pd.DataFrame, Dict
             mask = (df['wave_direction'] == direction) & (df['wave_period'] == period)
             subset = df[mask]
 
-            if not subset.empty:
-                # Find the maximum amplitude where Operational is True
-                operational_subset = subset[subset['Operational']]
-                if not operational_subset.empty:
-                    max_amplitude = operational_subset['wave_amplitude'].max()
-                    # Get the row with maximum amplitude
-                    max_row = operational_subset[operational_subset['wave_amplitude'] == max_amplitude].iloc[0]
+            if subset.empty:
+                continue
+        
+            # Find the maximum amplitude where Operational is True
+            operational_subset = subset[subset['Operational']]
 
-                    amplitude_matrix.at[period, direction] = max_amplitude
-                    for outcome in OUTCOMES:
-                        outcomes[outcome].at[period, direction] = max_row[outcome]
-                    
-                else:
-                    amplitude_matrix.at[period, direction] = 0.
-                    for outcome in OUTCOMES:
-                        outcomes[outcome].at[period, direction] = np.nan
-                    
+            if operational_subset.empty:
+                amplitude_matrix.at[period, direction] = 0.
+                for outcome in OUTCOMES:
+                    outcomes[outcome].at[period, direction] = np.nan
+            
+            else:
+                max_amplitude = operational_subset['wave_amplitude'].max()
+                # Get the row with maximum amplitude
+                max_row = operational_subset[operational_subset['wave_amplitude'] == max_amplitude].iloc[0]
+
+                amplitude_matrix.at[period, direction] = max_amplitude
+                for outcome in OUTCOMES:
+                    outcomes[outcome].at[period, direction] = max_row[outcome]
+                
     amplitude_matrix = amplitude_matrix.round(3)
     for outcome in OUTCOMES:
         outcomes[outcome] = outcomes[outcome].round(3)
