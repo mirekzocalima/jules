@@ -175,3 +175,6 @@ cython_debug/
 
 # Do not track model files
 *.joblib
+
+# Do not track jupyter notebooks
+ipy/
