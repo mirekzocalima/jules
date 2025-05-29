@@ -18,7 +18,7 @@ RAO_PARAMS = load_rao_config()
 
 
 # Configure logger
-logger = logging.getLogger("nautilus.backend.rao")
+logger = logging.getLogger(__name__)
 
 
 def canonicalize_point(point: Optional[Tuple[float, float, float]]) -> Tuple[float, float, float]:
