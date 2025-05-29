@@ -5,7 +5,7 @@ import sys
 from typing import Optional
 from pathlib import Path
 
-LOGGER_FORMAT = '{asctime} {levelname} {name} {module}:{lineno}: {message}'
+LOGGER_FORMAT = '{asctime} {levelname} {name}:{lineno}: {message}'
 
 
 def setup_logging(level: int = logging.INFO) -> logging.Logger:
