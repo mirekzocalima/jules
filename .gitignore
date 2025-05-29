@@ -175,4 +175,3 @@ cython_debug/
 
 # Do not track model files
 *.joblib
-/models/*.joblib
