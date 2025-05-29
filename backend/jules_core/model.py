@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 
 from dotenv import load_dotenv
+from functools import lru_cache
 from pathlib import Path
 from typing import List, Union, Dict, Optional
 
@@ -28,12 +29,41 @@ def set_model_path(date: str, cable_type: str):
     return f'models/{date}/model_{cable_type}.joblib'
 
 
+@lru_cache(maxsize=5)
+def list_available_cable_types(version: str = '2025-05-23'):
+    """List available cable types for a given version"""
+    key = f'models/{version}/'
+    s3_path = f's3://{S3_BUCKET}/{key}'
+    try:
+        logger.info(f"List available cable types for version {version!r} at {s3_path!r}")
+        s3_client = boto3.client('s3')
+        response = s3_client.list_objects_v2(Bucket=S3_BUCKET, Prefix=key)
+        if response['KeyCount'] > 0:
+            cable_types = [obj['Key'].split('/')[-1].replace('model_', '').replace('.joblib', '') for obj in response['Contents']]
+            logger.info(f"Found {len(cable_types)} cable types for version {version!r}: {cable_types}")
+            return cable_types
+        else:
+            logger.info(f"No cable types found for version {version!r}")
+            return []
+    except ClientError as e:
+        logger.error(f"Error downloading from S3: {str(e)}", exc_info=True)
+        raise
+
+
 class NautilusModelLoader:
     """Handles loading models from local files or S3."""
 
     def __init__(self, version: str, cable_type: str):
         """Initialize the model loader with configuration."""
         self.version = version
+
+        self.available_cable_types = list_available_cable_types(version)
+
+        if cable_type not in self.available_cable_types:
+            msg = f"Cable type {cable_type!r} not found in {self.available_cable_types}"
+            logger.error(msg)
+            raise ValueError(msg)
+
         self.cable_type = cable_type
         logger.info(f"{self!r}: Loading model")
 
@@ -61,10 +91,10 @@ class NautilusModelLoader:
         self.outcomes = self._details['outcomes']
         self.features = [v for v in self.model.feature_names_in_]
 
-        logger.info(f"{self!r}: Model loaded successfully")
-
         self._performance_df = None
         self._feature_importance_df = None
+
+        logger.info(f"{self!r}: Model ready")
 
     def __repr__(self):
         return f"{self.__class__.__name__}(version={self.version!r}, cable_type={self.cable_type!r})"
