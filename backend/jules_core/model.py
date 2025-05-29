@@ -9,15 +9,19 @@ import os
 import numpy as np
 import pandas as pd
 
+from dotenv import load_dotenv
 from pathlib import Path
 from typing import List, Union, Dict, Optional
 
 from botocore.exceptions import ClientError
 from tenacity import retry, stop_after_attempt, wait_exponential
 
+load_dotenv()
+
 logger = logging.getLogger(__name__)
 
 PREDICTOR_ARG_TYPES = Union[Dict[str, float], List[Dict[str, float]]]
+S3_BUCKET = 'nautilus-seabed-sg'
 
 
 def set_model_path(date: str, cable_type: str):
@@ -33,7 +37,7 @@ class NautilusModelLoader:
         self.cable_type = cable_type
         logger.info(f"{self!r}: Loading model")
 
-        self.s3_bucket = os.getenv("S3_BUCKET")
+        self.s3_bucket = S3_BUCKET
         self.s3_model_key = set_model_path(self.version, self.cable_type)
 
         try:
