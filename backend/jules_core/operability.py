@@ -532,33 +532,35 @@ def get_operability_heatmap(model_version: str, cable_type: str,
     Returns:
         dict: Dictionary containing 'data' and 'layout' keys for the Plotly figure
     """
-    operability_matrix, outcomes = get_operability_df(
-        model_version=model_version,
-        cable_type=cable_type,
-        vessel=vessel,
-        vessel_type=vessel_type,
-        draught=draught,
-        point=point,
-        features=features,
-        mbr_min=mbr_min,
-        tension_tdp_min=tension_tdp_min,
-        tension_tdp_max=tension_tdp_max
-    )
+    input = {
+        'model_version': model_version,
+        'cable_type': cable_type,
+        'vessel': vessel,
+        'vessel_type': vessel_type,
+        'draught': draught,
+        'point': point,
+        'features': features,
+        'mbr_min': mbr_min,
+        'tension_tdp_min': tension_tdp_min,
+        'tension_tdp_max': tension_tdp_max
+    }
+    logger.info(f"Get operability heatmap for {input!r}")
+
+    operability_matrix, outcomes = get_operability_df(**input)
 
     vessel_title, point_title = set_figure_title(vessel, vessel_type, draught, point)
     title_text = vessel_title
     if point_title:
         title_text += f"<br>{point_title}"
 
+    logger.info(f"Plot operability heatmap for {title_text!r}")
     fig = plot_operability_heatmap(operability_matrix, title_text)
 
     # Convert the figure to a dictionary and ensure all values are JSON-serializable
     fig_dict = fig.to_dict()
 
     # Process the figure dictionary to ensure JSON serializability
-    processed_dict = _convert_numpy_types(fig_dict)
+    processed_fig_dict = _convert_numpy_types(fig_dict)
+    logger.info(f"Processed figure dictionary: {processed_fig_dict.keys()!r}")
 
-    return {
-        'data': processed_dict['data'],
-        'layout': processed_dict['layout']
-    }
+    return processed_fig_dict
