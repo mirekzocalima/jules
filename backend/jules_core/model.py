@@ -15,9 +15,7 @@ from typing import List, Union, Dict, Optional
 from botocore.exceptions import ClientError
 from tenacity import retry, stop_after_attempt, wait_exponential
 
-
 logger = logging.getLogger(__name__)
-
 
 PREDICTOR_ARG_TYPES = Union[Dict[str, float], List[Dict[str, float]]]
 
