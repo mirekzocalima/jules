@@ -1,0 +1,23 @@
+  wave_direction:
+    min: 0.0
+    max: 360.0
+    default: 0.0
+    step: 15.0
+    rao_step: 30.
+    description: "Wave direction (deg)"
+    
+  wave_period:
+    min: 4.0
+    max: 15.0
+    default: 8.0
+    step: 0.1
+    rao_step: 1.0
+    description: "Wave period (s)"
+    
+  wave_amplitude:
+    min: 0.0
+    max: 6.
+    default: 0.1
+    step: 0.1
+    rao_step: 0.1
+    description: "Wave amplitude (m)"
