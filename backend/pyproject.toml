@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jules_core"
-version = "0.1.0"
+version = "0.0.1"
 description = "Core backend logic for Nautilus Jules"
 authors = [
     { name = "Your Name", email = "your@email.com" }
@@ -25,7 +25,8 @@ dependencies = [
     "matplotlib>=3.4.0",
     "plotly>=5.3.0",
     "xgboost==2.0.3",
-    "vessels @ git+ssh://github.com/mirekzocalima/vessels.git@main"
+    "vessels @ git+ssh://github.com/mirekzocalima/vessels.git@main",
+    "cables @ git+ssh://github.com/mirekzocalima/cables.git@main"
 ]
 
 [project.optional-dependencies]
