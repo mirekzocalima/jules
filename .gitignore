@@ -174,4 +174,5 @@ cython_debug/
 .pypirc
 
 # Do not track model files
-.joblib
+*.joblib
+/models/*.joblib
