@@ -1,0 +1,12 @@
+env: prod
+backend:
+  host: prod-backend.internal
+  port: 8001
+api:
+  host: prod-api.internal
+  port: 8000
+frontend:
+  host: prod-frontend.internal
+  port: 4200
+database:
+  url: postgresql://user:password@localhost:5432/prod_db
