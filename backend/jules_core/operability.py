@@ -18,7 +18,7 @@ OUTCOMES = [
 THREE_OUTCOMES = ['mbr_min', 'tension_tdp_min', 'tension_tdp_max']
 TWO_OUTCOMES = ['tension_tdp_min', 'normalized_curvature']
 
-logger = logging.getLogger("nautilus.backend.operability")
+logger = logging.getLogger(__name__)
 
 
 @lru_cache(maxsize=16)
