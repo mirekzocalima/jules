@@ -76,7 +76,8 @@ class NautilusModelLoader:
             base_dir = Path(os.getcwd())
 
         # Add a dot to the model path
-        self.model_path = base_dir / '.' + self.s3_model_key
+        local_model_file =  '.' + self.s3_model_key
+        self.model_path = base_dir / local_model_file
         self.model_path.parent.mkdir(parents=True, exist_ok=True)
 
         self._details = self._load_model()
