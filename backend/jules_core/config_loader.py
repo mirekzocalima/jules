@@ -4,7 +4,7 @@ from pathlib import Path
 
 ENV = os.environ.get('ENV', 'dev')
 
-CONFIG_PATH = Path(__file__).parent.parent.parent/ 'config'
+CONFIG_PATH = Path('/config')
 
 ENV_PATH = CONFIG_PATH / f'{ENV}.yaml'
 RAO_PATH = CONFIG_PATH / 'rao.yaml'
