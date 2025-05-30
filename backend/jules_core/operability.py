@@ -11,10 +11,8 @@ import plotly.graph_objects as go
 from jules_core.model import NautilusModel
 from jules_core.rao import RAOCalculator
 
-OUTCOMES = [
-    'mbr_min', 'tension_tdp_min', 'tension_tdp_max', 'normalized_curvature',
-    'endB_x_min', 'endB_x_max', 'endB_y_min', 'endB_y_max'
-]
+
+OPERABILITY_OUTCOMES = ['mbr_min', 'tension_tdp_min', 'tension_tdp_max', 'normalized_curvature']
 THREE_OUTCOMES = ['mbr_min', 'tension_tdp_min', 'tension_tdp_max']
 TWO_OUTCOMES = ['tension_tdp_min', 'normalized_curvature']
 
@@ -267,7 +265,7 @@ def evaluate_operability_all_wave_conditions(predicted_df: pd.DataFrame, mbr_min
     return pd.concat([predicted_df, _df, operational, operational_nc], axis=1)
 
 
-def get_max_operational_amplitudes(df: pd.DataFrame) -> Tuple[pd.DataFrame, Dict[str, pd.DataFrame]]:
+def get_max_operational_amplitudes(model_version: str, cable_type: str, df: pd.DataFrame) -> Tuple[pd.DataFrame, Dict[str, pd.DataFrame]]:
     """
     Process operability table to find maximum wave amplitudes where operation is still True
     for each combination of wave_direction and wave_period.
@@ -283,13 +281,15 @@ def get_max_operational_amplitudes(df: pd.DataFrame) -> Tuple[pd.DataFrame, Dict
             - Dict[str, pd.DataFrame]: Dictionary of matrices for each outcome at the maximum operational wave amplitudes
     """
     # Define the wave directions and periods
+
+    model = get_model(model_version, cable_type)
     wave_directions = sorted(df['wave_direction'].unique().tolist())
     wave_periods = sorted(df['wave_period'].unique().tolist())
 
     # Initialize the result matrices with NaN values
     amplitude_matrix = pd.DataFrame(index=wave_periods, columns=wave_directions)
     outcomes = {}
-    for outcome in OUTCOMES:
+    for outcome in model.outcomes:
         outcomes[outcome] = pd.DataFrame(index=wave_periods, columns=wave_directions)
 
     # Group by wave_direction and wave_period
@@ -307,7 +307,7 @@ def get_max_operational_amplitudes(df: pd.DataFrame) -> Tuple[pd.DataFrame, Dict
 
             if operational_subset.empty:
                 amplitude_matrix.at[period, direction] = 0.
-                for outcome in OUTCOMES:
+                for outcome in model.outcomes:
                     outcomes[outcome].at[period, direction] = np.nan
             
             else:
@@ -316,11 +316,11 @@ def get_max_operational_amplitudes(df: pd.DataFrame) -> Tuple[pd.DataFrame, Dict
                 max_row = operational_subset[operational_subset['wave_amplitude'] == max_amplitude].iloc[0]
 
                 amplitude_matrix.at[period, direction] = max_amplitude
-                for outcome in OUTCOMES:
+                for outcome in model.outcomes:
                     outcomes[outcome].at[period, direction] = max_row[outcome]
                 
     amplitude_matrix = amplitude_matrix.round(3)
-    for outcome in OUTCOMES:
+    for outcome in model.outcomes:
         outcomes[outcome] = outcomes[outcome].round(3)
 
     return amplitude_matrix, outcomes
@@ -423,7 +423,11 @@ def get_operability_df(model_version: str, cable_type: str, vessel: str, vessel_
         tension_tdp_min=tension_tdp_min,
         tension_tdp_max=tension_tdp_max
     )
-    operability_matrix, outcomes = get_max_operational_amplitudes(operability_details_df)
+    operability_matrix, outcomes = get_max_operational_amplitudes(
+        model_version=model_version,
+        cable_type=cable_type,
+        df=operability_details_df
+        )
 
     return operability_matrix, outcomes
 
