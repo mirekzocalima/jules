@@ -6,6 +6,9 @@ ENV = os.environ.get('ENV', 'dev')
 
 CONFIG_PATH = Path('/config')
 
+if not CONFIG_PATH.exists():
+    CONFIG_PATH = Path(__file__).parent.parent.parent/ 'config'
+
 ENV_PATH = CONFIG_PATH / f'{ENV}.yaml'
 RAO_PATH = CONFIG_PATH / 'rao.yaml'
 
