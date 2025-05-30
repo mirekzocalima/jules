@@ -25,12 +25,12 @@ PREDICTOR_ARG_TYPES = Union[Dict[str, float], List[Dict[str, float]]]
 S3_BUCKET = 'nautilus-seabed-sg'
 
 
-def set_model_path(date: str, cable_type: str):
+def set_model_path(date: str, cable_type: str) -> str:
     return f'models/{date}/model_{cable_type}.joblib'
 
 
 @lru_cache(maxsize=5)
-def list_available_cable_types(version: str = '2025-05-23'):
+def list_available_cable_types(version: str = '2025-06-01'):
     """List available cable types for a given version"""
     key = f'models/{version}/'
     s3_path = f's3://{S3_BUCKET}/{key}'
@@ -75,7 +75,8 @@ class NautilusModelLoader:
         except NameError:
             base_dir = Path(os.getcwd())
 
-        self.model_path = base_dir / self.s3_model_key
+        # Add a dot to the model path
+        self.model_path = base_dir / '.' + self.s3_model_key
         self.model_path.parent.mkdir(parents=True, exist_ok=True)
 
         self._details = self._load_model()
