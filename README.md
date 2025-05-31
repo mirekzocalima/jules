@@ -42,7 +42,7 @@ DOCKER_BUILDKIT=1 docker build --ssh default --no-cache -t jules-backend-dev:lat
 ```
 and then run it with 
 ```sh
-docker run -it --rm -p 8888:8888 -v $(pwd)/ipy:/app/ipy jules-backend-dev:latest
+docker run --env-file .env -it --rm -p 8888:8888 -v $(pwd)/ipy:/app/ipy jules-backend-dev:latest
 ```
 ### API Service: Building with Private Git Dependencies
 
