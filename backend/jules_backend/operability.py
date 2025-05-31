@@ -8,8 +8,8 @@ from typing import Dict, Tuple, Any
 
 import plotly.graph_objects as go
 
-from jules_core.model import NautilusModel
-from jules_core.rao import RAOCalculator
+from jules_backend.model import NautilusModel
+from jules_backend.rao import RAOCalculator
 
 
 OPERABILITY_OUTCOMES = ['mbr_min', 'tension_tdp_min', 'tension_tdp_max', 'normalized_curvature']
