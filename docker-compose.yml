@@ -1,5 +1,3 @@
-version: '3.8'
-
 # Environment variable usage:
 # - For development, use a .env file in this directory (not for secrets!).
 # - For staging/production, set ENV in your shell or deployment system (do NOT use .env).
