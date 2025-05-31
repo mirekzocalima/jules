@@ -1,0 +1,56 @@
+version: '3.8'
+env_file:
+     - .env
+#
+# Environment variable usage:
+# - For development, use a .env file in this directory (not for secrets!).
+# - For staging/production, set ENV in your shell or deployment system (do NOT use .env).
+#   Example: export ENV=prod && docker-compose up -d
+#
+# The ENV variable selects the config and behavior for dev, stage, or prod.
+#
+services:
+  backend:
+    build: ./backend
+    environment:
+      - ENV=${ENV:-dev}
+    volumes:
+      - ./config:/app/config:ro
+    ports:
+      - "8001:8001"
+
+  api:
+    build: ./api
+    environment:
+      - ENV=${ENV:-dev}
+      - DATABASE_URL=postgresql://user:password@db:5432/nautilus
+      - SECRET_KEY=your-secret-key
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+    volumes:
+      - ./config:/app/config:ro
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    environment:
+      - ENV=${ENV:-dev}
+    volumes:
+      - ./config:/app/config:ro
+    ports:
+      - "4200:4200"
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=nautilus
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
