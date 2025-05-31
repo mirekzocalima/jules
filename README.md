@@ -33,13 +33,12 @@ Create container to hold the library for all backend functionality.
 
 2. Build the backend image with 
 ```sh
-
-DOCKER_BUILDKIT=1 docker build --ssh default --no-cache -t jules-backend:latest -f backend/Dockerfile
+DOCKER_BUILDKIT=1 docker build --ssh default --no-cache -t jules-backend:latest -f backend/Dockerfile .
 ```
 
 3. To build a test container for jupyter notebook
 ```sh
-$ DOCKER_BUILDKIT=1 docker build --ssh default --no-cache -t jules-backend-dev:latest -f backend/dev/Dockerfile .
+DOCKER_BUILDKIT=1 docker build --ssh default --no-cache -t jules-backend-dev:latest -f backend/dev/Dockerfile .
 ```
 and then run it with 
 ```sh
