@@ -8,7 +8,7 @@ from typing import Dict, List, Optional, Tuple, Union, Any
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from jules_core.config_loader import load_rao_config
+from jules_backend.config_loader import load_rao_config
 
 
 from vessels.loader import NautilusVessels
