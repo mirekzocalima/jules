@@ -25,6 +25,16 @@
 - Each service is containerized and can be deployed independently (Azure Web App for Containers, AKS, etc.)
 - Use `ENV` to select environment
 
+### Backend
+
+Create container to hold the library for all backend functionality.
+
+1.
+
+2. Build the backend image with 
+```sh
+DOCKER_BUILDKIT=1 docker build --ssh default --no-cache -t jules-backend:latest ./backend
+```
 ### API Service: Building with Private Git Dependencies
 
 If your backend or API depends on private git repositories (e.g., via `git+ssh://`), you must use Docker BuildKit with SSH forwarding:
