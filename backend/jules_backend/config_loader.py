@@ -4,7 +4,7 @@ from pathlib import Path
 
 ENV = os.environ.get('ENV', 'dev')
 
-CONFIG_PATH = Path('/config')
+CONFIG_PATH = Path('/app/config')
 
 if not CONFIG_PATH.exists():
     CONFIG_PATH = Path(__file__).parent.parent.parent/ 'config'
