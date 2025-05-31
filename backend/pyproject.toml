@@ -12,6 +12,8 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "vessels @ git+ssh://git@github.com/mirekzocalima/vessels.git@main",
+    "cables @ git+ssh://git@github.com/mirekzocalima/cables.git@main",
     "boto3>=1.26.0",
     "joblib>=1.0.0",
     "matplotlib>=3.4.0",
@@ -25,10 +27,9 @@ dependencies = [
     "pyyaml>=5.4.1",
     "scikit-learn>=0.24.0",
     "tenacity>=8.0.0",
-    "xgboost==2.0.3",
-    "vessels @ git+ssh://github.com/mirekzocalima/vessels.git@main",
-    "cables @ git+ssh://github.com/mirekzocalima/cables.git@main"
+    "xgboost==2.0.3"
 ]
+    
 
 [project.optional-dependencies]
 dev = [
