@@ -36,14 +36,25 @@ Create container to hold the library for all backend functionality.
 DOCKER_BUILDKIT=1 docker build --ssh default --no-cache -t jules-backend:latest -f backend/Dockerfile .
 ```
 
+Or with `docker compose build`
+```sh
+DOCKER_BUILDKIT=1 docker compose build --no-cache backend
+```
+
 3. To build a test container for jupyter notebook
 ```sh
 DOCKER_BUILDKIT=1 docker build --ssh default --no-cache -t jules-backend-dev:latest -f backend/dev/Dockerfile .
+```
+or with `docker compose build`
+```sh
+DOCKER_BUILDKIT=1 docker compose build --no-cache backend-dev
 ```
 and then run it with 
 ```sh
 docker run --env-file .env -it --rm -p 8888:8888 -v $(pwd)/ipy:/app/ipy jules-backend-dev:latest
 ```
+
+
 ### API Service: Building with Private Git Dependencies
 
 If your backend or API depends on private git repositories (e.g., via `git+ssh://`), you must use Docker BuildKit with SSH forwarding:
