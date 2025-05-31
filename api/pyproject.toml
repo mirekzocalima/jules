@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jules_api"
-version = "0.1.0"
+version = "0.0.1"
 description = "API implementation for Nautilus Jules"
 authors = [
     { name = "Damir Herman", email = "damir@nautilus-ai.org" }
@@ -22,11 +22,7 @@ dependencies = [
     "pydantic",
     "pydantic-settings",
     "python-dotenv",
-    "loguru",
-    # Use JULES_CORE_PATH env var if set, otherwise default to Docker build path
-    # For local dev: export JULES_CORE_PATH=../backend
-    # For Docker build: export JULES_CORE_PATH=/app/backend (or leave unset for default)
-    "jules_core @ file://${JULES_CORE_PATH:-/app/backend}"
+    "loguru"
 ]
 
 [project.optional-dependencies]
