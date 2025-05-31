@@ -1,7 +1,5 @@
 version: '3.8'
-env_file:
-     - .env
-#
+
 # Environment variable usage:
 # - For development, use a .env file in this directory (not for secrets!).
 # - For staging/production, set ENV in your shell or deployment system (do NOT use .env).
@@ -11,13 +9,36 @@ env_file:
 #
 services:
   backend:
-    build: ./backend
+    env_file:
+     - .env
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      ssh:
+        - default
+    image: jules-backend:latest
     environment:
       - ENV=${ENV:-dev}
     volumes:
       - ./config:/app/config:ro
     ports:
       - "8001:8001"
+
+  backend-dev:
+    env_file:
+     - .env
+    build:
+      context: .
+      dockerfile: backend/dev/Dockerfile
+      ssh:
+        - default
+    image: jules-backend-dev:latest
+    environment:
+      - ENV=${ENV:-dev}
+    volumes:
+      - ./config:/app/config:ro
+    ports:
+      - "8888:8888"
 
   api:
     build: ./api
