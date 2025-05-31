@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
 COPY config ./config
 COPY backend/pyproject.toml ./
-COPY backend/jules_backend ./jules_backend
+COPY backend/src ./src
 
 RUN mkdir -p /root/.ssh && ssh-keyscan github.com >> /root/.ssh/known_hosts
 
