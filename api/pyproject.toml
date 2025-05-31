@@ -23,7 +23,10 @@ dependencies = [
     "pydantic-settings",
     "python-dotenv",
     "loguru",
-    "jules_core @ file:../backend"
+    # Use JULES_CORE_PATH env var if set, otherwise default to Docker build path
+    # For local dev: export JULES_CORE_PATH=../backend
+    # For Docker build: export JULES_CORE_PATH=/app/backend (or leave unset for default)
+    "jules_core @ file://${JULES_CORE_PATH:-/app/backend}"
 ]
 
 [project.optional-dependencies]
